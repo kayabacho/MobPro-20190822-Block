@@ -63,6 +63,7 @@ def move_ball():
         ball["diry"] *= -1
         if random.randint(0, 1) == 0: ball["dirx"] *= -1
         by = 380
+
     # ボールがブロックに当たった？
     hit_i = -1
     for i, w in enumerate(blocks):
@@ -91,9 +92,13 @@ def game_loop():
 
 # マウスイベントの処理
 def motion(e): # マウスポインタの移動
-    bar["x"] = e.x
+    if cv.winfo_width() - bar["w"] <= e.x :
+        bar["x"] = cv.winfo_width() - bar["w"]
+    else:
+        bar["x"] = e.x
 def click(e): # クリックでリスタート
     if is_gameover: init_game()
+
 # マウスイベントを登録
 win.bind('<Motion>', motion)
 win.bind('<Button-1>', click)
