@@ -5,7 +5,7 @@ import random
 # ゲーム中で使う変数の一覧
 blocks = []
 block_size = {"x": 75, "y": 30}
-ball = {"dirx": 15, "diry": -15, "x": 350, "y": 300, "w": 10}
+ball = {"dirx": 15, "diry": -40, "x": 350, "y": 300, "w": 10}
 bar = {"x": 0, "w": 100}
 is_gameover = False
 point = 0
@@ -25,8 +25,8 @@ def init_game():
     # ブロックを配置する
     for iy in range(0, 5):
         for ix in range(0, 8):
-            color = "red"
-            if (iy + ix) % 2 == 1: color = "blue"
+            color = "gray"
+            if (iy + ix) % 2 == 1: color = "silver"
             x1 = 4 + ix * block_size["x"]
             x2 = x1 + block_size["x"]
             y1 = 4 + iy * block_size["y"]
@@ -47,7 +47,7 @@ def draw_objects():
         ball["x"] + ball["w"], ball["y"] + ball["w"], fill="green")
     # バーを描画
     cv.create_rectangle(bar["x"], 390, bar["x"] + bar["w"], 400, 
-        fill="yellow")
+        fill="gray")
 
 # ボールの移動
 def move_ball():
@@ -68,7 +68,8 @@ def move_ball():
     hit_i = -1
     for i, w in enumerate(blocks):
         x1, y1, x2, y2, color = w
-        w3 = ball["w"] / 3
+        # w3 = ball["w"] / 3
+        w3 = ball["w"] * 2
         if (x1-w3 <= bx <= x2+w3) and (y1-w3 <= by <= y2+w3):
             hit_i = i
             break
@@ -78,6 +79,8 @@ def move_ball():
         ball["diry"] *= -1
         point += 10
         win.title("GAME SCORE = " + str(point))
+    #終了
+    if 
     # ゲームオーバー？
     if by >= 400:
         win.title("Game Over!! score=" + str(point))
@@ -92,10 +95,14 @@ def game_loop():
 
 # マウスイベントの処理
 def motion(e): # マウスポインタの移動
-    if cv.winfo_width() - bar["w"] <= e.x :
+    ex = e.x - bar["w"] /2 
+    if cv.winfo_width() - bar["w"] <= ex :
         bar["x"] = cv.winfo_width() - bar["w"]
+    elif ex <= 0 :
+        bar["x"] = 0
     else:
-        bar["x"] = e.x
+        bar["x"] = ex
+    
 def click(e): # クリックでリスタート
     if is_gameover: init_game()
 
