@@ -61,7 +61,16 @@ def move_ball():
     # プレイヤーの操作するバーに当たった？
     if by > 390 and (bar["x"] <= bx <= (bar["x"] + bar["w"])):
         ball["diry"] *= -1
-        if random.randint(0, 1) == 0: ball["dirx"] *= -1
+
+        val = random.randint(10, 20)
+
+        ball["diry"] = val * -1
+        if ball["dirx"] < 0:
+            ball["dirx"] = (20 - val + 10) * -1
+        else:
+            ball["dirx"] = (20 - val + 10)
+
+        #if random.randint(0, 1) == 0: ball["dirx"] *= -1
         by = 380
 
     # ボールがブロックに当たった？
@@ -69,7 +78,7 @@ def move_ball():
     for i, w in enumerate(blocks):
         x1, y1, x2, y2, color = w
         # w3 = ball["w"] / 3
-        w3 = ball["w"] * 2
+        w3 = ball["w"]
         if (x1-w3 <= bx <= x2+w3) and (y1-w3 <= by <= y2+w3):
             hit_i = i
             break
@@ -80,7 +89,10 @@ def move_ball():
         point += 10
         win.title("GAME SCORE = " + str(point))
     #終了
-    if 
+    if len(blocks) == 0:
+        win.title("Clear!! score=" + str(point))
+        is_gameover = True
+
     # ゲームオーバー？
     if by >= 400:
         win.title("Game Over!! score=" + str(point))
