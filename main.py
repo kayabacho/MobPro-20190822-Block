@@ -81,13 +81,16 @@ def move_ball():
         w3 = ball["w"]
         if (x1-w3 <= bx <= x2+w3) and (y1-w3 <= by <= y2+w3):
             hit_i = i
-            break
+
+            if hit_i >= 0:
+                del blocks[hit_i]
+                point += 10
+                win.title("GAME SCORE = " + str(point))
+    
     if hit_i >= 0:
-        del blocks[hit_i]
         if random.randint(0, 1) == 0: ball["dirx"] *= -1
         ball["diry"] *= -1
-        point += 10
-        win.title("GAME SCORE = " + str(point))
+
     #終了
     if len(blocks) == 0:
         win.title("Clear!! score=" + str(point))
